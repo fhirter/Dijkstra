@@ -5,7 +5,6 @@ public interface Node {
     public Node getPredecessor();
     public void setPredecessor(Node node);
     public int getCurrentDistance();
-    public void setAsUnvisited();
     public void setVisited(boolean value);
     public void setCurrentDistance(int distance);
     public List<Node> getNeighbours();

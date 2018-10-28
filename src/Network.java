@@ -15,8 +15,6 @@ public class Network {
     }
 
     private void generateNetwork(List<String[]> links) {
-        distances = new HashMap<>();
-
         for(String link[]:links) {
             Node a = generateNode(link[0]);
             Node b = generateNode(link[1]);
