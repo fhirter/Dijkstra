@@ -1,13 +1,13 @@
 import java.util.List;
 
 public interface Node {
-    public String getName();
-    public Node getPredecessor();
-    public void setPredecessor(Node node);
-    public int getCurrentDistance();
-    public void setVisited(boolean value);
-    public void setCurrentDistance(int distance);
-    public List<Node> getNeighbours();
-    public boolean isVisited();
-    public void addNeighbour(Node node);
+    String getName();
+    Node getPredecessor();
+    void setPredecessor(Node node);
+    int getCurrentDistance();
+    void setVisited(boolean value);
+    void setCurrentDistance(int distance);
+    List<Node> getNeighbours();
+    boolean isVisited();
+    void addNeighbour(Node node);
 }

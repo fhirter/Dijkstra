@@ -41,13 +41,13 @@ public class Network {
     private Node generateNode(String name) {
 
         Node node = getNodeByName(name);
-        if (node != null) {
+        if (node != null)
             return node;
-        } else {
+        else
             node = new Waypoint(name);
             nodes.add(node);
             return node;              // else: create new node with given name
-        }
+
     }
 
     /**
