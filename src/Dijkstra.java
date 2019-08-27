@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Dijkstra {
@@ -10,10 +11,15 @@ public class Dijkstra {
 
     public static void main(String[] args) {
 
-        Object startNode;
+        Node startNode;
         Node destinationNode;
 
-        Network network = new Network("Distanzen.csv");
+        Network network = null;
+        try {
+            network = new Network("Distanzen.csv");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Gib den Startknoten an:");
@@ -26,7 +32,7 @@ public class Dijkstra {
 
         Dijkstra dijkstra = new Dijkstra(startNode,destinationNode, network);
 
-        while(false) {
+        while(true) {
             dijkstra.calcDistancesToNeighboursOverCurrentNodeAndSetSmaller();
             dijkstra.setCurrentAsVisited();
             dijkstra.removeCurrentNodeFromUnvisitedNodes();
@@ -36,7 +42,7 @@ public class Dijkstra {
             dijkstra.setCurrentNode(dijkstra.getClosestNode());
         }
 
-        dijkstra.printDistance("km");
+//        dijkstra.printDistance("km");
         dijkstra.printRoute();
 
         long runtime = System.nanoTime() - startTime;
@@ -48,12 +54,13 @@ public class Dijkstra {
     Dijkstra(Node startNode, Node destinationNode, Network network) {
         this.startNode = startNode;
         this.destinationNode = destinationNode;
+        this.network = network;
 
         unvisitedNodes = new HashSet<Node>();
         route = new LinkedList<Node>();
 
         setAllNodesAsUnvisited();
-        addAllNodesToUnvisited()
+        addAllNodesToUnvisited();
         setDistancesToInfinite();
         setStartNodeDistanceToZero();
 
@@ -113,7 +120,7 @@ public class Dijkstra {
         while(iterator.hasNext()) {
             Node node = iterator.next();
             if(min == null || min.getCurrentDistance()>node.getCurrentDistance()) {
-                min = node
+                min = node;
             }
         }
         return min;
@@ -122,7 +129,7 @@ public class Dijkstra {
     public void setAllNodesAsUnvisited() {
         Iterator<Node> iterator = network.getNodes().iterator();
 
-        while(iterator.next() != null) {
+        while(iterator.hasNext()) {
             iterator.next().setAsUnvisited();
         }
     }
@@ -168,7 +175,7 @@ public class Dijkstra {
     }
 
     public void setCurrentAsVisited() {
-       currentNode.setVisited(true);
+       currentNode.setAsVisited();
     }
 
     public void removeCurrentNodeFromUnvisitedNodes() {
