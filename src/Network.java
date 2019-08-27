@@ -70,14 +70,11 @@ public final class Network {
             return 0;
         }
 
-        if(distances.containsKey(from) && distances.containsKey(to)) {
-            if(distances.get(from).get(to) != null) {
-                return distances.get(from).get(to);
-            }
-
-            if(distances.get(to).get(from) != null) {
-                return distances.get(to).get(from);
-            }
+        if(distances.containsKey(from) && distances.get(from).containsKey(to)) {
+           return distances.get(from).get(to);
+        }
+        if(distances.containsKey(to) && distances.get(to).containsKey(from)) {
+            return distances.get(to).get(from);
         }
 
         throw new NoSuchElementException();
