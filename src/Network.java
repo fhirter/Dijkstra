@@ -80,8 +80,9 @@ public final class Network {
         throw new NoSuchElementException();
     }
 
-    public List<Node> getNodes() {
-        return new ArrayList<Node>(nodes.values());
+    public Collection<Node> getNodes() {
+        final Collection<Node> values = nodes.values();
+        return values;
     }
 
     /**
@@ -109,7 +110,7 @@ public final class Network {
         }
     }
 
-    private class Waypoint implements Node {
+    private class Waypoint implements Node, Comparable<Node> {
         private int currentDistance;
         private List<Node> neighbours;
         private String name;
@@ -170,6 +171,12 @@ public final class Network {
                     ", name='" + name + '\'' +
                     ", isVisited=" + isVisited +
                     '}';
+        }
+
+        @Override
+        public int compareTo(Node node) {
+            // todo: objects are considered equal when they have the same distance!
+            return this.currentDistance - node.getCurrentDistance();
         }
     }
 }

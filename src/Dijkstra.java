@@ -5,7 +5,7 @@ public class Dijkstra {
     List<Node> route;
     Node currentNode;
     Network network;
-    Set<Node> unvisitedNodes;
+    TreeSet<Node> unvisitedNodes;
     Node startNode;
     Node destinationNode;
 
@@ -56,11 +56,10 @@ public class Dijkstra {
         this.destinationNode = destinationNode;
         this.network = network;
 
-        unvisitedNodes = new HashSet<Node>();
+        unvisitedNodes = new TreeSet<>();
         route = new LinkedList<Node>();
 
         setAllNodesAsUnvisited();
-        unvisitedNodes.addAll(network.getNodes());
         setDistancesToInfinite();
         setStartNodeDistanceToZero();
 
@@ -102,7 +101,10 @@ public class Dijkstra {
     public Node getClosestNode() {
         Node min = null;
 
+//        Node newMin = unvisitedNodes.first();
+
         Iterator<Node> iterator = unvisitedNodes.iterator();
+
         while(iterator.hasNext()) {
             Node node = iterator.next();
             if(min == null || min.getCurrentDistance()>node.getCurrentDistance()) {
@@ -113,7 +115,9 @@ public class Dijkstra {
     }
 
     public void setAllNodesAsUnvisited() {
-        Iterator<Node> iterator = network.getNodes().iterator();
+        final Collection<Node> nodes = network.getNodes();
+        unvisitedNodes.addAll(nodes);
+        Iterator<Node> iterator = unvisitedNodes.iterator();
 
         while(iterator.hasNext()) {
             iterator.next().setAsUnvisited();
