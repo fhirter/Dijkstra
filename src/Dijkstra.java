@@ -1,63 +1,34 @@
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Dijkstra {
     List<Node> route;
     Node currentNode;
     Network network;
-    TreeSet<Node> unvisitedNodes;
+    Set<Node> unvisitedNodes;
     Node startNode;
     Node destinationNode;
 
-    public static void main(String[] args) {
 
-        Node startNode;
-        Node destinationNode;
 
-        Network network = null;
-        try {
-            network = new Network("Distanzen.csv");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Gib den Startknoten an:");
-        startNode = network.getNodeByName(sc.nextLine());
-
-        System.out.println("Gib den Endknoten an:");
-        destinationNode = network.getNodeByName(sc.nextLine());
-
-        long startTime = System.nanoTime();
-
-        Dijkstra dijkstra = new Dijkstra(startNode,destinationNode, network);
-
+    public void run() {
         while(true) {
-            dijkstra.calcDistancesToNeighboursOverCurrentNodeAndSetSmaller();
-            dijkstra.setCurrentAsVisited();
-            dijkstra.removeCurrentNodeFromUnvisitedNodes();
-            if(dijkstra.isDestinationClosest()) {
+            calcDistancesToNeighboursOverCurrentNodeAndSetSmaller();
+            setCurrentAsVisited();
+            removeCurrentNodeFromUnvisitedNodes();
+            if(isDestinationClosest()) {
                 break;
             }
-            dijkstra.setCurrentNode(dijkstra.getClosestNode());
+            setCurrentNode(getClosestNode());
         }
-
-        dijkstra.printDistance();
-        dijkstra.printRoute();
-
-        long runtime = System.nanoTime() - startTime;
-        System.out.println(runtime/1000000+"ms");
     }
-
-
 
     Dijkstra(Node startNode, Node destinationNode, Network network) {
         this.startNode = startNode;
         this.destinationNode = destinationNode;
         this.network = network;
 
-        unvisitedNodes = new TreeSet<>();
-        route = new LinkedList<Node>();
+        unvisitedNodes = new LinkedHashSet<>();
+        route = new LinkedList<>();
 
         setAllNodesAsUnvisited();
         setDistancesToInfinite();
@@ -66,7 +37,9 @@ public class Dijkstra {
         setCurrentNode(startNode);
     }
 
-    private List<Node> getRoute() {
+    private List<Node> calculateRoute() {
+        route.clear();
+
         route.add(destinationNode);
 
         Node node = destinationNode.getPredecessor();
@@ -81,27 +54,18 @@ public class Dijkstra {
         return route;
     }
 
-    private void printRoute() {
-        getRoute();
-        System.out.printf("The Route from %s to %s is:",startNode.getName(),destinationNode.getName());
-        Iterator<Node> iterator = route.iterator();
-        while(iterator.hasNext()) {
-            System.out.print(iterator.next().getName());
-            if(iterator.hasNext()) {
-                System.out.print(" -> ");
-            }
-        }
-        System.out.print("\n");
+    public List<Node> getRoute() {
+        calculateRoute();
+        return new LinkedList<>(route);
     }
 
-    private void printDistance() {
-        System.out.printf("The Distance from %s to %s is %d\n",startNode.getName(),destinationNode.getName(),destinationNode.getCurrentDistance());
+    public int getDistance() {
+        return destinationNode.getCurrentDistance();
+        // System.out.printf("The Distance from %s to %s is %d\n",startNode.getName(),destinationNode.getName(),destinationNode.getCurrentDistance());
     }
 
     public Node getClosestNode() {
         Node min = null;
-
-//        Node newMin = unvisitedNodes.first();
 
         Iterator<Node> iterator = unvisitedNodes.iterator();
 
