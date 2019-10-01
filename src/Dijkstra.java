@@ -1,14 +1,29 @@
 import java.util.*;
 
 public class Dijkstra {
-    List<Node> route;
-    Node currentNode;
-    Network network;
-    Set<Node> unvisitedNodes;
-    Node startNode;
-    Node destinationNode;
+    private final Network network;
+    private List<Node> route;
+    private Node currentNode;
+    private Set<Node> unvisitedNodes;
+    private Node startNode;
+    private Node destinationNode;
 
 
+
+    Dijkstra(Node startNode, Node destinationNode, Network network) {
+        this.startNode = startNode;
+        this.destinationNode = destinationNode;
+        this.network = network;
+
+        unvisitedNodes = new LinkedHashSet<>();
+
+
+        setAllNodesAsUnvisited();
+        setDistancesToInfinite();
+        setStartNodeDistanceToZero();
+
+        setCurrentNode(startNode);
+    }
 
     public void run() {
         while(true) {
@@ -22,23 +37,18 @@ public class Dijkstra {
         }
     }
 
-    Dijkstra(Node startNode, Node destinationNode, Network network) {
-        this.startNode = startNode;
-        this.destinationNode = destinationNode;
-        this.network = network;
-
-        unvisitedNodes = new LinkedHashSet<>();
-        route = new LinkedList<>();
-
-        setAllNodesAsUnvisited();
-        setDistancesToInfinite();
-        setStartNodeDistanceToZero();
-
-        setCurrentNode(startNode);
+    public List<Node> getRoute() {
+        calculateRoute();
+        return new LinkedList<>(route);
     }
 
-    private List<Node> calculateRoute() {
-        route.clear();
+    public int getDistance() {
+        return destinationNode.getCurrentDistance();
+        // System.out.printf("The Distance from %s to %s is %d\n",startNode.getName(),destinationNode.getName(),destinationNode.getCurrentDistance());
+    }
+
+    private void calculateRoute() {
+        route = new LinkedList<>();
 
         route.add(destinationNode);
 
@@ -51,60 +61,45 @@ public class Dijkstra {
             }
             node = node.getPredecessor();
         }
-        return route;
     }
 
-    public List<Node> getRoute() {
-        calculateRoute();
-        return new LinkedList<>(route);
-    }
-
-    public int getDistance() {
-        return destinationNode.getCurrentDistance();
-        // System.out.printf("The Distance from %s to %s is %d\n",startNode.getName(),destinationNode.getName(),destinationNode.getCurrentDistance());
-    }
-
-    public Node getClosestNode() {
+    private Node getClosestNode() {
         Node min = null;
 
-        Iterator<Node> iterator = unvisitedNodes.iterator();
-
-        while(iterator.hasNext()) {
-            Node node = iterator.next();
-            if(min == null || min.getCurrentDistance()>node.getCurrentDistance()) {
+        for (Node node : unvisitedNodes) {
+            if (min == null || min.getCurrentDistance() > node.getCurrentDistance()) {
                 min = node;
             }
         }
         return min;
     }
 
-    public void setAllNodesAsUnvisited() {
+    private void setAllNodesAsUnvisited() {
         final Collection<Node> nodes = network.getNodes();
         unvisitedNodes.addAll(nodes);
-        Iterator<Node> iterator = unvisitedNodes.iterator();
 
-        while(iterator.hasNext()) {
-            iterator.next().setAsUnvisited();
+        for (Node unvisitedNode : unvisitedNodes) {
+            unvisitedNode.setAsUnvisited();
         }
     }
 
-    public void setDistancesToInfinite() {
+    private void setDistancesToInfinite() {
         for(Node node: network.getNodes()) {
             node.setCurrentDistance(Integer.MAX_VALUE);
         }
     }
 
-    public void setStartNodeDistanceToZero() {
+    private void setStartNodeDistanceToZero() {
         startNode.setCurrentDistance(0);
 
     }
 
-    public void setCurrentNode(Node node) {
+    private void setCurrentNode(Node node) {
         currentNode = node;
 
     }
 
-    public void calcDistancesToNeighboursOverCurrentNodeAndSetSmaller() {
+    private void calcDistancesToNeighboursOverCurrentNodeAndSetSmaller() {
         int newCurrentDistance;
         for(Node neighbour : currentNode.getNeighbours()) {
             if(neighbour != null || !neighbour.isVisited()) {
@@ -125,15 +120,15 @@ public class Dijkstra {
         }
     }
 
-    public void setCurrentAsVisited() {
+    private void setCurrentAsVisited() {
        currentNode.setAsVisited();
     }
 
-    public void removeCurrentNodeFromUnvisitedNodes() {
+    private void removeCurrentNodeFromUnvisitedNodes() {
         unvisitedNodes.remove(currentNode);
     }
 
-    public boolean isDestinationClosest() {
+    private boolean isDestinationClosest() {
         if(getClosestNode() == destinationNode) {
             return true;
         } else {
