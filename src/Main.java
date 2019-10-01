@@ -1,60 +1,47 @@
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class Main {
+import java.io.FileNotFoundException;
+
+public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Node startNode;
-        Node destinationNode;
+        launch(args);
+    }
 
-        Network network = null;
+    @Override
+    public void start(Stage stage) throws Exception {
+
         try {
-            network = new Network("Distanzen.csv");
-        } catch (
-                FileNotFoundException e) {
+            Network network = new Network("Distanzen.csv");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
+            FXController controller = new FXController(network);
+            loader.setController(controller);
+            loader.load();
+
+            controller.setHandlers();
+
+            stage.setTitle("Dijkstra");
+
+            stage.setScene(new Scene(loader.getRoot()));
+            stage.show();
+
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
+            Platform.exit();
         }
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Gib den Startknoten an:");
-        startNode = network.getNodeByName(sc.nextLine());
 
-        System.out.println("Gib den Endknoten an:");
-        destinationNode = network.getNodeByName(sc.nextLine());
 
-        long startTime = System.nanoTime();
-        Dijkstra dijkstra = new Dijkstra(startNode, destinationNode, network);
-        dijkstra.run();
-        long runtime = System.nanoTime() - startTime;
 
-        System.out.println(dijkstra.getDistance());
-        System.out.println(dijkstra.getRoute());
-        System.out.println(runtime / 1000000 + "ms");
+
     }
-
-  /*  private void buildRouteString() {
-
-    StringBuilder routeString = new StringBuilder();
-
-        routeString.append("The Route from ");
-        routeString.append(startNode.getName());
-        routeString.append(" to");
-        routeString.append(destinationNode.getName());
-        routeString.append(" is ");
-
-
-    Iterator<Node> iterator = route.iterator();
-        while(iterator.hasNext())
-
-    {
-        routeString.append(iterator.next().getName());
-        if (iterator.hasNext()) {
-            routeString.append(" -> ");
-        }
-    }
-        return routeString.toString();
-}
-
-*/
 }
