@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
 
         try {
-            Network network = new Network("Distanzen.csv");
+            Network network = new Network("DistanzenNeu.csv");
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("main.fxml"));
             FXController controller = new FXController(network);
