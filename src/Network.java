@@ -18,14 +18,15 @@ public final class Network {
         List<String[]> links = readCSV(path);
 
         for(String link[]:links) {
-            Node a = generateNode(link[0]);
-            Node b = generateNode(link[1]);
+            Node a = getNodeCreateIfNotExistent(link[0]);
+            Node b = getNodeCreateIfNotExistent(link[1]);
             a.addNeighbour(b);
             b.addNeighbour(a);
             Integer distance = Integer.parseInt(link[2]);
 
-            if(distances.get(a) != null) { // entry already exists
-                distances.get(a).put(b,distance);
+            Map<Node, Integer> nodeDistanceMap = distances.get(a);
+            if(nodeDistanceMap != null) { // entry already exists
+                nodeDistanceMap.put(b,distance);
             } else {
                 Map<Node, Integer> entry = new HashMap<>();
                 entry.put(b, distance);
@@ -40,9 +41,9 @@ public final class Network {
      * @param name Name for the node
      * @return  Node with given name
      */
-    private Node generateNode(String name) {
+    private Node getNodeCreateIfNotExistent(String name) {
         if (nodes.containsKey(name)) {
-            return nodes.get(name);
+            return getNode(name);
         } else {
             Node node  = new Waypoint(name);
             nodes.put(name, node);
@@ -55,7 +56,7 @@ public final class Network {
      * @param name
      * @return node or null of not found
      */
-    public Node getNodeByName(String name) {
+    public Node getNode(String name) {
         return nodes.get(name);
     }
 

@@ -3,7 +3,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,8 +27,8 @@ public class FXController {
                 Node startNode;
                 Node destinationNode;
 
-                startNode = network.getNodeByName(start.getText());
-                destinationNode = network.getNodeByName(destination.getText());
+                startNode = network.getNode(start.getText());
+                destinationNode = network.getNode(destination.getText());
 
                 long startTime = System.nanoTime();
                 Dijkstra dijkstra = new Dijkstra(startNode, destinationNode, network);
