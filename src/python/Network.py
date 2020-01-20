@@ -52,4 +52,4 @@ class Network:
             return self.__distances[to_node][from_node]
 
     def get_nodes(self):
-        return tuple(self.__nodes)
+        return self.__nodes
