@@ -8,9 +8,9 @@ class Network:
     __distances = {}
 
     def __init__(self, path):
-        self.generate_network(path)
+        self.__generate_network(path)
 
-    def generate_network(self, path):
+    def __generate_network(self, path):
         with open(path, 'r') as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             for row in data:
