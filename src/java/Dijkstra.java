@@ -129,11 +129,6 @@ public class Dijkstra {
     }
 
     private boolean isDestinationClosest() {
-        if(getClosestNode() == destinationNode) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return getClosestNode() == destinationNode;
     }
 }
