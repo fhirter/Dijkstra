@@ -17,14 +17,14 @@ class Network:
                 a = self.__get_node_create_if_not_existing(row[0])
                 b = self.__get_node_create_if_not_existing(row[1])
 
-                a.addNeighbour(b)
-                b.addNeighbour(a)
+                a.add_neighbour(b)
+                b.add_neighbour(a)
 
                 distance = int(row[2])
 
-                nodeDistanceDictionary = self.__distances.get(a)
-                if nodeDistanceDictionary != None:
-                    nodeDistanceDictionary[b] = distance
+                node_distance_dictionary = self.__distances.get(a)
+                if node_distance_dictionary != None:
+                    node_distance_dictionary[b] = distance
                 else:
                     entry = {}
                     entry[b] = distance

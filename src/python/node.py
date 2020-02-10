@@ -7,5 +7,5 @@ class Node:
         self.current_distance = 2 ** 32
         self.visited = False
 
-    def addNeighbour(self, node):
+    def add_neighbour(self, node):
         self.__neighbours.append(node)

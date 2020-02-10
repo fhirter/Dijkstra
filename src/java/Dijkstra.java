@@ -17,7 +17,6 @@ public class Dijkstra {
 
         unvisitedNodes = new LinkedHashSet<>();
 
-
         setAllNodesAsUnvisited();
         setDistancesToInfinite();
         setStartNodeDistanceToZero();
