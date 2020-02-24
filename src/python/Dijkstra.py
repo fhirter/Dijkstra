@@ -11,5 +11,5 @@ class Dijkstra:
         self.__network = network
 
     def run(self, start: Node, destination: Node):
-        self.__start = start
-        self.__destination = destination
+        self.__start = self.__network.get_node(start)
+        self.__destination = self.__network.get_node(destination)
