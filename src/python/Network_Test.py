@@ -14,14 +14,14 @@ class NetworkTest(unittest.TestCase):
             self.assertEqual(name, node.name)
 
     def test_distances(self):
-        self.assertDistance(self.network, "Albisrieden", "Bern", 6)
-        self.assertDistance(self.network, "Frauenfeld", "Kirchberg", 5)
-        self.assertDistance(self.network, "Luzern", "Malters", 7)
-        self.assertDistance(self.network, "Malters", "Wangen", 11)
+        self.assertDistance("Albisrieden", "Bern", 6)
+        self.assertDistance("Frauenfeld", "Kirchberg", 5)
+        self.assertDistance("Luzern", "Malters", 7)
+        self.assertDistance("Malters", "Wangen", 11)
 
-    def assertDistance(self, network, node_a, node_b, distance):
-        distance = network.get_distance(network.get_node(node_a), network.get_node(node_b))
-        self.assertEqual(distance, distance)
+    def assertDistance(self, node_a, node_b, distance):
+        network_distance = self.network.get_distance(self.network.get_node(node_a), self.network.get_node(node_b))
+        self.assertEqual(distance, network_distance)
 
     def test_get_nodes(self):
         nodes = self.network.get_nodes()
