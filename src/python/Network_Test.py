@@ -28,6 +28,5 @@ class NetworkTest(unittest.TestCase):
         self.assertEqual(len(nodes), 26)
 
 
-
 if __name__ == '__main__':
     unittest.main()
