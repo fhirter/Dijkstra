@@ -1,26 +1,19 @@
-import tkinter as tk
-
 from Dijkstra import Dijkstra
-from Network import Network
 from View import View
 
 
-class Presenter(tk.Frame):
+class Presenter:
     __dijkstra: Dijkstra
     __view: View
 
-    def __init__(self):
-        super().__init__(None)
-        self.pack()
-
-        self.__network = Network("DistanzenNeu.csv")
-        self.__dijkstra = Dijkstra(self.__network)
-        self.__view = View(self)
+    def __init__(self, view, dijkstra):
+        self.__dijkstra = dijkstra
+        self.__view = view
 
         self.__view.button.bind("<Button-1>", self.button_event_handler)
-        self.__dijkstra.subscribe(self.run_complete_handler)
+        self.__dijkstra.attach(self.run_complete_handler)
 
-        self.mainloop()
+        view.mainloop()
 
     def button_event_handler(self, event):
         start = self.__view.start_text.get()
@@ -30,6 +23,3 @@ class Presenter(tk.Frame):
 
     def run_complete_handler(self, event):
         print(event.type + ": algorithm completed!")
-
-
-presenter = Presenter()

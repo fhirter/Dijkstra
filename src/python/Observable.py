@@ -8,10 +8,10 @@ class Observable:
     def __init__(self):
         self.__callbacks = []
 
-    def subscribe(self, callback):
+    def attach(self, callback):
         self.__callbacks.append(callback)
 
-    def _fire(self, source, message):
+    def _notify(self, source, message):
         event = Event(source, message)
 
         for callback in self.__callbacks:

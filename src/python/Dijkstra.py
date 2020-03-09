@@ -4,9 +4,13 @@ from node import Node
 
 
 class Dijkstra(Observable):
+    __network: Network
+
     __start: Node
     __destination: Node
-    __network: Network
+
+    __current_node: Node
+    __unvisited_nodes: []
 
     def __init__(self, network):
         super().__init__()
@@ -15,4 +19,10 @@ class Dijkstra(Observable):
     def run(self, start: Node, destination: Node):
         self.__start = self.__network.get_node(start)
         self.__destination = self.__network.get_node(destination)
-        self._fire(self, "run_completed")
+        self._notify(self, "run_completed")
+
+    def is_destination_closest(self) -> bool:
+        for node in self.__unvisited_nodes:
+            if self.__destination.current_distance > node.current_distance:
+                return False
+        return True
