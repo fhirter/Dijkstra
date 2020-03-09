@@ -18,7 +18,7 @@ class Presenter:
     def button_event_handler(self, event):
         start = self.__view.start_text.get()
         destination = self.__view.destination_text.get()
-        print("running algorithm. From: " + start + "To: " + destination)
+        print("running algorithm. From: " + start + " To: " + destination)
         self.__dijkstra.run(start, destination)
 
     def run_complete_handler(self, event):

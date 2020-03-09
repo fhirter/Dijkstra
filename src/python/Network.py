@@ -8,10 +8,10 @@ class Network:
     __nodes = {}
     __distances = {}
 
-    def __init__(self, path):
+    def __init__(self, path: str):
         self.__generate_network(path)
 
-    def __generate_network(self, path, encoding='utf-8'):
+    def __generate_network(self, path, encoding='utf-8') -> None:
         with open(path, 'r', encoding=encoding) as csvfile:
             data = csv.reader(csvfile, delimiter=',')
             for row in data:
@@ -30,7 +30,7 @@ class Network:
                     entry = {b: distance}
                     self.__distances[a] = entry
 
-    def __get_node_create_if_not_existing(self, name):
+    def __get_node_create_if_not_existing(self, name: str) -> Node:
         if name in self.__nodes:
             return self.__nodes[name]
         else:
@@ -38,10 +38,10 @@ class Network:
             self.__nodes[name] = node
             return node
 
-    def get_node(self, name):
+    def get_node(self, name: str) -> Node:
         return self.__nodes[name]
 
-    def get_distance(self, from_node, to_node):
+    def get_distance(self, from_node: Node, to_node: Node) -> int:
         if from_node == to_node:
             return 0
 
@@ -51,5 +51,5 @@ class Network:
         if to_node in self.__distances and from_node in self.__distances[to_node]:
             return self.__distances[to_node][from_node]
 
-    def get_nodes(self):
+    def get_nodes(self) -> dict:
         return copy.deepcopy(self.__nodes)
