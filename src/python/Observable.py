@@ -1,6 +1,6 @@
 class Event:
-    def __init__(self, source, event_type):
-        self.type = event_type
+    def __init__(self, source, message: str):
+        self.message = message
         self.source = source
 
 
@@ -11,7 +11,7 @@ class Observable:
     def attach(self, callback):
         self.__callbacks.append(callback)
 
-    def _notify(self, source, message):
+    def _notify(self, source: object, message: str):
         event = Event(source, message)
 
         for callback in self.__callbacks:

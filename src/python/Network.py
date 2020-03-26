@@ -1,7 +1,7 @@
 import copy
 import csv
 
-from node import Node
+from Node import Node
 
 
 class Network:
@@ -41,7 +41,10 @@ class Network:
     def get_node(self, name: str) -> Node:
         return self.__nodes[name]
 
-    def get_distance(self, from_node: Node, to_node: Node) -> int:
+    def get_distance(self, from_str: str, to_str: str) -> int:
+        from_node = self.__nodes.get(from_str)
+        to_node = self.__nodes.get(to_str)
+
         if from_node == to_node:
             return 0
 
